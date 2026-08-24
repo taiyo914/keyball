@@ -81,6 +81,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             return swap_shift(KC_SCLN, KC_COLN, record);
         case KC_QUOT:                                  // 単押し '"' / Shift '''
             return swap_shift(KC_QUOT, KC_DQUO, record);
+        case KC_BSLS:                                  // 単押し '|' / Shift '\'
+            return swap_shift(KC_BSLS, KC_PIPE, record);
     }
     return true;
 }
