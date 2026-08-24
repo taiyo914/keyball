@@ -55,6 +55,35 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 };
 // clang-format on
+ 
+// Shift の有無で送る文字を入れ替える共通処理
+static bool swap_shift(uint8_t plain, uint16_t shifted, keyrecord_t *record) {
+    if (record->event.pressed) {
+        uint8_t mods = get_mods();
+        if (mods & MOD_MASK_SHIFT) {
+            // Shift を一時的に外して、素のキーコードを送る
+            del_mods(MOD_MASK_SHIFT);
+            send_keyboard_report();
+            tap_code(plain);
+            set_mods(mods);
+            send_keyboard_report();
+        } else {
+            // Shift なしのときに、Shift 付きの文字を送る
+            tap_code16(shifted);
+        }
+    }
+    return false;   // 既定の処理はさせない
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case KC_SCLN:                                  // 単押し ':' / Shift ';'
+            return swap_shift(KC_SCLN, KC_COLN, record);
+        case KC_QUOT:                                  // 単押し '"' / Shift '''
+            return swap_shift(KC_QUOT, KC_DQUO, record);
+    }
+    return true;
+}
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     // Auto enable scroll mode when the highest layer is 3
@@ -71,4 +100,4 @@ void oledkit_render_info_user(void) {
     keyball_oled_render_ballinfo();
     keyball_oled_render_layerinfo();
 }
-#endif
+#endif 
