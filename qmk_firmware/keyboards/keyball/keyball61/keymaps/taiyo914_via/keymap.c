@@ -79,8 +79,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case KC_SCLN:                                  // 単押し ':' / Shift ';'
             return swap_shift(KC_SCLN, KC_COLN, record);
-        case KC_QUOT:                                  // 単押し '"' / Shift '''
-            return swap_shift(KC_QUOT, KC_DQUO, record);
+        // case KC_QUOT:                                  // 単押し '"' / Shift '''
+            // return swap_shift(KC_QUOT, KC_DQUO, record);
         case KC_BSLS:                                  // 単押し '|' / Shift '\'
             return swap_shift(KC_BSLS, KC_PIPE, record);
     }
@@ -92,6 +92,51 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     keyball_set_scroll_mode(get_highest_layer(state) == 3);
     return state;
 }
+
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+#    include <stdlib.h>
+
+// オートマウスレイヤーに入るまでに必要なボールの累積移動量（センサーのカウント数）
+#    define AML_ENTER_THRESHOLD 40
+// ボールがこの時間止まったら、それまでの累積移動量を捨てる
+#    define AML_ENTER_RESET_MS 200
+
+static int16_t  aml_travel    = 0;
+static uint16_t aml_last_move = 0;
+
+// レイヤーに入っていない間だけ移動量を足し込み、合計がしきい値に達したときに入る
+bool auto_mouse_activation(report_mouse_t mouse_report) {
+    // ボタンを押している間は必ずレイヤーを維持する
+    if (mouse_report.buttons) {
+        aml_travel = 0;
+        return true;
+    }
+
+    int16_t delta = abs(mouse_report.x) + abs(mouse_report.y) + abs(mouse_report.h) + abs(mouse_report.v);
+
+    // すでにレイヤーに入っているときは QMK の既定と同じ判定にする。
+    // ここでもしきい値を課すと、ゆっくり動かしている最中にレイヤーが抜ける。
+    if (layer_state_is(get_auto_mouse_layer())) {
+        aml_travel = 0;
+        return delta > 0;
+    }
+
+    if (delta == 0) {
+        if (timer_elapsed(aml_last_move) > AML_ENTER_RESET_MS) {
+            aml_travel = 0;
+        }
+        return false;
+    }
+
+    aml_last_move = timer_read();
+    aml_travel += delta;
+    if (aml_travel >= AML_ENTER_THRESHOLD) {
+        aml_travel = 0;
+        return true;
+    }
+    return false;
+}
+#endif
 
 #ifdef OLED_ENABLE
 
