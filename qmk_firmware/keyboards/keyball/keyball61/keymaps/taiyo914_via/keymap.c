@@ -16,6 +16,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+/* 
+ファームウェアを書き込むコマンド
+```
+cd /path/to/qmk
+make keyball/keyball61:taiyo914_via:flash
+```
+*/
+
 #include QMK_KEYBOARD_H
 
 #include "quantum.h"
@@ -26,38 +34,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // 文字入力
   [0] = LAYOUT_universal(
-    KC_ESC   , KC_1     , KC_2     , KC_3     , KC_4           , KC_5        ,                                        KC_6         , KC_7     , KC_8     , KC_9     , KC_0      , KC_DEL   ,
-    KC_TAB   , KC_Q     , KC_W     , KC_E     , KC_R           , KC_T        ,                                        KC_Y         , KC_U     , KC_I     , KC_O     , KC_P      , KC_BSPC  ,
-    KC_LCTL  , KC_A     , KC_S     , KC_D     , KC_F           , KC_G        ,                                        KC_H         , KC_J     , KC_K     , KC_L     , KC_MINS   , KC_ENT   ,
-    KC_LSFT  , KC_Z     , KC_X     , KC_C     , KC_V           , KC_B        , _______     ,         KC_B           , KC_N         , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH   , KC_RSFT  ,
-    MO(3)    , KC_HOME  , KC_LALT  , KC_LGUI  , LGUI_T(KC_LNG2), LT(2,KC_SPC), LT(3,KC_SPC),         RGUI_T(KC_LNG1), LT(1,KC_LNG1), XXXXXXX  , XXXXXXX  , XXXXXXX  , KC_RALT   , KC_HOME
+    KC_ESC  , KC_SCRL    , KC_PAUS    , KC_KB_MUTE , KC_KB_VOLUME_DOWN , KC_KB_VOLUME_UP ,                                  G(A(KC_I))    , C(S(G(KC_4))) , S(G(KC_2)) , _______   , _______ , KC_DEL,
+    KC_TAB  , KC_Q       , KC_W       , KC_E       , KC_R              , KC_T            ,                                  KC_Y          , KC_U          , KC_I       , KC_O      , KC_P    , KC_BSPC,
+    KC_LCTL , KC_A       , KC_S       , KC_D       , KC_F              , KC_G            ,                                  KC_H          , KC_J          , KC_K       , KC_L      , KC_MINS , KC_ENT,
+    KC_LSFT , KC_Z       , KC_X       , KC_C       , KC_V              , KC_B            , _______      , TG(2)           , KC_N          , KC_M          , KC_COMM    , KC_DOT    , KC_SLSH , KC_RSFT,
+    MO(3)   , KC_LCTL    , KC_RSFT    , KC_LALT    , LGUI_T(KC_LNG2)   , LT(2,KC_SPC)    , LT(3,KC_SPC) , RGUI_T(KC_LNG1) , LT(1,KC_LNG1) , XXXXXXX       , XXXXXXX    , XXXXXXX   , KC_RALT , KC_HOME
   ),
-
   // 数字と記号
   [1] = LAYOUT_universal(
-    _______  , _______  , _______  , _______  , _______        , _______     ,                                        _______      , _______  , _______  , _______  , _______   , _______  ,
-    _______  , KC_9     , KC_8     , KC_7     , KC_6           , KC_5        ,                                        KC_LBRC      , KC_RBRC  , S(KC_9)  , S(KC_0)  , S(KC_2)   , _______  ,
-    _______  , KC_4     , KC_3     , KC_2     , KC_1           , KC_0        ,                                        S(KC_3)      , KC_GRV   , S(KC_8)  , S(KC_DOT), S(KC_MINS), _______  ,
-    _______  , S(KC_4)  , S(KC_6)  , S(KC_7)  , S(KC_EQL)      , S(KC_5)     , _______     ,         _______        , KC_QUOT      , KC_SCLN  , KC_BSLS  , KC_EQL   , S(KC_1)   , _______  ,
-    _______  , _______  , _______  , _______  , _______        , _______     , _______     ,         _______        , _______      , XXXXXXX  , XXXXXXX  , XXXXXXX  , _______   , _______
+    _______ , _______    , _______    , _______    , _______           , _______         ,                                  _______       , _______       , _______    , _______   , _______ , _______,
+    _______ , KC_9       , KC_8       , KC_7       , KC_6              , KC_5            ,                                  KC_LBRC       , KC_RBRC       , S(KC_9)    , S(KC_0)   , S(KC_2) , _______,
+    _______ , KC_4       , KC_3       , KC_2       , KC_1              , KC_0            ,                                  S(KC_3)       , KC_GRV        , S(KC_8)    , S(KC_DOT) , KC_MINS , _______,
+    _______ , S(KC_4)    , S(KC_6)    , S(KC_7)    , S(KC_EQL)         , S(KC_5)         , _______      , _______         , KC_QUOT       , KC_SCLN       , KC_BSLS    , KC_EQL    , S(KC_1) , _______,
+    _______ , _______    , _______    , _______    , _______           , _______         , _______      , _______         , _______       , XXXXXXX       , XXXXXXX    , XXXXXXX   , _______ , _______
   ),
-
   // ファンクション・カーソル・マウス（オートマウスレイヤー）
   [2] = LAYOUT_universal(
-    _______  , KC_F1    , KC_F2    , KC_F3    , KC_F4          , KC_F5       ,                                        KC_F6        , KC_F7    , KC_F8    , KC_F9    , KC_F10    , KC_F11   ,
-    _______  , _______  , _______  , KC_UP    , _______        , _______     ,                                        _______      , KC_BTN4  , _______  , KC_BTN5  , _______   , KC_F12   ,
-    _______  , _______  , KC_LEFT  , KC_DOWN  , KC_RGHT        , _______     ,                                        _______      , KC_BTN1  , SCRL_MO  , KC_BTN2  , _______   , _______  ,
-    _______  , _______  , _______  , _______  , _______        , _______     , _______     ,         _______        , _______      , _______  , _______  , _______  , _______   , _______  ,
-    _______  , _______  , _______  , _______  , _______        , _______     , _______     ,         _______        , _______      , XXXXXXX  , XXXXXXX  , XXXXXXX  , _______   , _______
+    _______ , KC_F1      , KC_F2      , KC_F3      , KC_F4             , KC_F5           ,                                  KC_F6         , KC_F7         , KC_F8      , KC_F9     , KC_F10  , _______,
+    _______ , S(KC_LEFT) , A(KC_LEFT) , KC_UP      , A(KC_RGHT)        , S(KC_RGHT)      ,                                  _______       , KC_BTN4       , _______    , KC_BTN5   , _______ , _______,
+    _______ , G(KC_LEFT) , KC_LEFT    , KC_DOWN    , KC_RGHT           , G(KC_RGHT)      ,                                  KC_BSPC       , KC_BTN1       , SCRL_MO    , KC_BTN2   , _______ , _______,
+    _______ , _______    , _______    , _______    , _______           , _______         , _______      , TG(2)           , _______       , _______       , _______    , _______   , _______ , _______,
+    _______ , _______    , _______    , _______    , _______           , _______         , _______      , _______         , _______       , XXXXXXX       , XXXXXXX    , XXXXXXX   , _______ , _______
   ),
-
   // Keyball の設定（このレイヤーを押している間はスクロールモードになる）
   [3] = LAYOUT_universal(
-    _______  , _______  , _______  , _______  , _______        , _______     ,                                        _______      , _______  , _______  , _______  , _______   , _______  ,
-    _______  , SSNP_FRE , SSNP_HOR , SSNP_VRT , AML_D50        , AML_I50     ,                                        _______      , _______  , _______  , _______  , _______   , _______  ,
-    _______  , AML_TO   , SCRL_DVD , SCRL_DVI , SCRL_MO        , SCRL_TO     ,                                        _______      , _______  , _______  , _______  , _______   , _______  ,
-    _______  , CPI_D1K  , CPI_I1K  , CPI_D100 , CPI_I100       , KBC_SAVE    , KBC_RST     ,         EE_CLR         , _______      , _______  , _______  , _______  , _______   , _______  ,
-    _______  , _______  , _______  , _______  , _______        , _______     , _______     ,         _______        , _______      , XXXXXXX  , XXXXXXX  , XXXXXXX  , _______   , _______
+    _______ , _______    , _______    , _______    , _______           , _______         ,                                  _______       , _______       , _______    , _______   , _______ , _______,
+    _______ , SSNP_FRE   , SSNP_HOR   , SSNP_VRT   , AML_D50           , AML_I50         ,                                  _______       , _______       , _______    , _______   , _______ , _______,
+    _______ , AML_TO     , SCRL_DVD   , SCRL_DVI   , SCRL_MO           , SCRL_TO         ,                                  _______       , _______       , _______    , _______   , _______ , _______,
+    _______ , CPI_D1K    , CPI_I1K    , CPI_D100   , CPI_I100          , KBC_SAVE        , KBC_RST      , EE_CLR          , _______       , _______       , _______    , _______   , _______ , _______,
+    _______ , _______    , _______    , _______    , _______           , _______         , _______      , _______         , _______       , XXXXXXX       , XXXXXXX    , XXXXXXX   , _______ , _______
   ),
 };
 // clang-format on
@@ -67,6 +72,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 void keyboard_post_init_user(void) {
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
     set_auto_mouse_enable(true);
+    // keyball.c の keyboard_post_init_kb() は EEPROM に保存された値でタイムアウトを上書きする。
+    // その保存領域は 5bit(最大 1600ms 相当)しかなく AUTO_MOUSE_TIME の 10000 を保てないので、
+    // 後から呼ばれるこの関数で毎回 config.h の値に戻す
+    set_auto_mouse_timeout(AUTO_MOUSE_TIME);
 #endif
 }
 

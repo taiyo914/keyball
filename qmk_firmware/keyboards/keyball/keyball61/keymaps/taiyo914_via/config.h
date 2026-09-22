@@ -88,7 +88,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // レイヤーから抜けるまでの時間(ms)。QMK の既定値は 650。
 // 実機では AML_I50 / AML_D50 で 100〜1000 を 50 刻みで変更できる
-#define AUTO_MOUSE_TIME 850
+// 1000 を超える値は keyball.c が起動時に EEPROM の値で上書きしてしまうので、
+// keymap.c の keyboard_post_init_user() で同じ値を set_auto_mouse_timeout() に渡している
+#define AUTO_MOUSE_TIME 10000
 
 // キーを打った後、この時間(ms)はレイヤーに入らない。既定は TAPPING_TERM と同じ値
 //#define AUTO_MOUSE_DELAY 200
