@@ -28,7 +28,7 @@
 //#define KEYBALL_SCROLLBALL_INHIVITOR 50
 
 // スクロール方向の固定。0:機能ごと無効(常に縦横自由) 1:縦固定 2:実機で切替(SSNP_*)
-// 0 にしているので、レイヤー3 の SSNP_VRT / SSNP_HOR / SSNP_FRE は何もしない
+// 0 にしているので、SSNP_VRT / SSNP_HOR / SSNP_FRE は何もしない（キーマップにも置いていない）
 #define KEYBALL_SCROLLSNAP_ENABLE 0
 
 // 動きが止まってから固定を解除するまでの時間(ms)。ENABLE が 1 のときだけ使われる
@@ -64,10 +64,10 @@
 #define POINTING_DEVICE_AUTO_MOUSE_ENABLE
 
 // マウスレイヤーとして使うレイヤー番号
-#define AUTO_MOUSE_DEFAULT_LAYER 2
+#define AUTO_MOUSE_DEFAULT_LAYER 3
 
 // レイヤーから抜けるまでの時間(ms)。QMK の既定値は 650。
-// 実機では AML_I50 / AML_D50 で 100〜1000 を 50 刻みで変更できる
+// 実機では AML_I50 / AML_D50 で 100〜1000 を 50 刻みで変更できる（キーマップには置いていない）
 // 1000 を超える値は keyball.c が起動時に EEPROM の値で上書きしてしまうので、
 // keymap.c の keyboard_post_init_user() で同じ値を set_auto_mouse_timeout() に渡している
 #define AUTO_MOUSE_TIME 10000
@@ -93,6 +93,14 @@
 // タップ直後に押し直したとき、連打として扱う時間(ms)。既定は TAPPING_TERM と同じ値
 //#define QUICK_TAP_TERM 200
 
+// get_hold_on_other_key_press() で、キーごとに HOLD_ON_OTHER_KEY_PRESS を使うか決める。
+// keymap.c で A の左の Ctrl/Esc キーだけに使っている
+#define HOLD_ON_OTHER_KEY_PRESS_PER_KEY
+
+// get_quick_tap_term() で、キーごとに QUICK_TAP_TERM を変える。
+// keymap.c で A の左の Ctrl/Esc キーだけ 0 にしている
+#define QUICK_TAP_TERM_PER_KEY
+
 // TT() でトグルするのに必要な連打回数
 //#define TAPPING_TOGGLE 5
 
@@ -108,13 +116,32 @@
 // キーごとに TAPPING_TERM を変える get_tapping_term() を使えるようにする
 //#define TAPPING_TERM_PER_KEY
 
+// --- 同時押し（keymap.c の key_combos） ---
+
+// 2つのキーを、この時間(ms)以内に押すと同時押しと判定する
+#define COMBO_TERM 50
+
+// --- スクロールキー（keymap.c の SCR_UP / SCR_DN / SCR_LT / SCR_RT） ---
+// - 短く押したとき: SCROLL_TAP_INTERVAL ms おきに SCROLL_TAP_COUNT 回スクロールする
+// - 長く押したとき: TAPPING_TERM を過ぎてから、1秒に SCROLL_HOLD_COUNT_PER_SEC 回スクロールする
+// 値は cline46 の CLine46.keymap とそろえている（SCROLL_TAP_INTERVAL は 3 × 16ms）
+
+// SCROLL_TAP_INTERVAL を上げるとゆっくり滑らかに動き、下げると素早くカクっと動く
+// 注意: Mac は素早くスクロールするほど大きく動かすので、値を上げると動きは小さく、下げると動きは大きくなる
+#define SCROLL_TAP_INTERVAL 48
+
+#define SCROLL_TAP_COUNT 4
+#define SCROLL_HOLD_COUNT_PER_SEC 30
+
 // --- その他 ---
 
 // tap_code() 関数がキーを押している時間(ms)。 デフォルトで設定されている。
 #define TAP_CODE_DELAY 5
 
 // Remap で編集できるレイヤー数。増やすと EEPROM の消費が増える
-//#define DYNAMIC_KEYMAP_LAYER_COUNT 4
+// 既定値の 4 だとレイヤー4（設定）が使えないので 5 にしている。
+// 1レイヤーで 160 バイト使う。EEPROM は全部で 1024 バイトで、残りは VIA のマクロに使われる
+#define DYNAMIC_KEYMAP_LAYER_COUNT 5
 
 // 無操作で OLED を消すまでの時間(ms)。0 で消さない
 //#define OLED_TIMEOUT 60000
