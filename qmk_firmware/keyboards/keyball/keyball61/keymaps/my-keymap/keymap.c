@@ -27,6 +27,8 @@ enum custom_keycodes {
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // 文字入力
+  //   Q の左: 単押しで Tab、長押しで Option
+  //   左右の Shift: 素早く2回押すと Caps Lock
   //   A の左: 単押しで Esc、長押しで Ctrl
   //   左親指の Space の左隣: 単押しで英数、長押しで Option
   //   左親指の Space の右隣: Cmd
@@ -34,7 +36,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //   右下の2キー: 音量
   [0] = LAYOUT_universal(
     _______        , KC_1       , KC_2       , KC_3          , KC_4              , KC_5            ,                                   KC_6          , KC_7          , KC_8       , KC_9    , KC_0    , _______ ,
-    KC_TAB         , KC_Q       , KC_W       , KC_E          , KC_R              , KC_T            ,                                   KC_Y          , KC_U          , KC_I       , KC_O    , KC_P    , KC_BSPC ,
+    LALT_T(KC_TAB) , KC_Q       , KC_W     , KC_E          , KC_R              , KC_T            ,                                   KC_Y          , KC_U          , KC_I       , KC_O    , KC_P    , KC_BSPC ,
     LCTL_T(KC_ESC) , KC_A       , KC_S       , KC_D          , KC_F              , KC_G            ,                                   KC_H          , KC_J          , KC_K       , KC_L    , KC_MINS , KC_ENT  ,
     KC_LSFT        , KC_Z       , KC_X       , KC_C          , KC_V              , KC_B            , _______       , _______         , KC_N          , KC_M          , KC_COMM    , KC_DOT  , KC_SLSH , KC_RSFT ,
     _______        , _______    , _______    , MO(4)         , LALT_T(KC_LNG2)   , LT(1,KC_SPC)    , KC_LGUI       , KC_RGUI         , LT(2,KC_LNG1) , XXXXXXX       , XXXXXXX    , XXXXXXX , KC_VOLD , KC_VOLU
@@ -42,10 +44,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // 数字と移動
   //   右手: 数字（テンキーと同じ並び）
   //   左手: 矢印
+  //   Q: カーソルの左の1単語を削除（Option+Backspace）  T: カーソルの右の1単語を削除（Option+Delete）
   //   右下の2キー: 画面の明るさ
   [1] = LAYOUT_universal(
     _______        , _______    , _______    , _______       , _______           , _______         ,                                   _______       , _______       , _______    , _______ , _______ , _______ ,
-    _______        , S(KC_LEFT) , A(KC_LEFT) , KC_UP         , A(KC_RGHT)        , S(KC_RGHT)      ,                                   _______       , KC_7          , KC_8       , KC_9    , _______ , _______ ,
+    _______        , A(KC_BSPC) , A(KC_LEFT) , KC_UP         , A(KC_RGHT)        , A(KC_DEL)       ,                                   _______       , KC_7          , KC_8       , KC_9    , _______ , _______ ,
     _______        , G(KC_LEFT) , KC_LEFT    , KC_DOWN       , KC_RGHT           , G(KC_RGHT)      ,                                   _______       , KC_4          , KC_5       , KC_6    , _______ , _______ ,
     _______        , _______    , _______    , _______       , _______           , _______         , _______       , _______         , KC_0          , KC_1          , KC_2       , KC_3    , _______ , _______ ,
     _______        , _______    , _______    , _______       , _______           , _______         , _______       , _______         , _______       , XXXXXXX       , XXXXXXX    , XXXXXXX , KC_BRID , KC_BRIU
@@ -67,16 +70,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //   I: 画面が下にスクロール  K: 画面が上にスクロール
   //   U: 画面が右にスクロール  O: 画面が左にスクロール
   //      ※ Mac の「ナチュラルなスクロール」を有効にしていると、スクロール方向と移動する向きが逆になる
-  //   H: 戻る  -: 進む
   //   J: 左クリック  L: 右クリック
-  //   Y: コピー（Cmd+C）  P: ペースト（Cmd+V）
-  //   N: 範囲を選んでクリップボードに保存するスクリーンショット（Cmd+Ctrl+Shift+4）
-  //   J と K の同時押し: 押している間スクロールモードになる（key_combos で設定）
+  //   J と K の同時押し: 戻る  K と L の同時押し: 進む（key_combos で設定）
+  //   U と I の同時押し: タブを閉じる（Cmd+W）  I と O の同時押し: 新しいタブ（Cmd+T）（key_combos で設定）
   [3] = LAYOUT_universal(
     _______        , _______    , _______    , _______       , _______           , _______         ,                                   _______       , _______       , _______    , _______ , _______ , _______ ,
-    _______        , _______    , _______    , _______       , _______           , _______         ,                                   G(KC_C)       , SCR_RT        , SCR_DN     , SCR_LT  , G(KC_V) , _______ ,
-    _______        , _______    , _______    , _______       , _______           , _______         ,                                   KC_BTN4       , KC_BTN1       , SCR_UP     , KC_BTN2 , KC_BTN5 , _______ ,
-    _______        , _______    , _______    , _______       , _______           , _______         , _______       , _______         , C(S(G(KC_4))) , _______       , _______    , _______ , _______ , _______ ,
+    _______        , _______    , _______    , _______       , _______           , _______         ,                                   _______       , SCR_RT        , SCR_DN     , SCR_LT  , _______ , _______ ,
+    _______        , _______    , _______    , _______       , _______           , _______         ,                                   _______       , KC_BTN1       , SCR_UP     , KC_BTN2 , _______ , _______ ,
+    _______        , _______    , _______    , _______       , _______           , _______         , _______       , _______         , _______       , _______       , _______    , _______ , _______ , _______ ,
     _______        , _______    , _______    , _______       , _______           , _______         , _______       , _______         , _______       , XXXXXXX       , XXXXXXX    , XXXXXXX , _______ , _______
   ),
   // 設定（Keyball の設定。このレイヤーを押している間はスクロールモードになる）
@@ -95,13 +96,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-// 同時押し
-// - マウスレイヤーで J と K を同時に押している間、スクロールモードになる
-// 同時に押したと判定する時間は config.h の COMBO_TERM
-const uint16_t PROGMEM scroll_combo[] = {KC_BTN1, SCR_UP, COMBO_END};
+// 同時押し（マウスレイヤー）
+// - キーの位置ではなく、マウスレイヤーに置いたキーコードの組み合わせで決める
+// - 同時に押したと判定する時間は config.h の COMBO_TERM
+const uint16_t PROGMEM back_combo[]      = {KC_BTN1, SCR_UP, COMBO_END};  // J + K: 戻る
+const uint16_t PROGMEM forward_combo[]   = {SCR_UP, KC_BTN2, COMBO_END};  // K + L: 進む
+const uint16_t PROGMEM close_tab_combo[] = {SCR_RT, SCR_DN, COMBO_END};   // U + I: タブを閉じる
+const uint16_t PROGMEM new_tab_combo[]   = {SCR_DN, SCR_LT, COMBO_END};   // I + O: 新しいタブ
 
 combo_t key_combos[] = {
-    COMBO(scroll_combo, SCRL_MO),
+    COMBO(back_combo, KC_BTN4),
+    COMBO(forward_combo, KC_BTN5),
+    COMBO(close_tab_combo, G(KC_W)),
+    COMBO(new_tab_combo, G(KC_T)),
 };
 
 // A の左の Ctrl/Esc キーは、別のキーを押した時点で Ctrl にする
@@ -143,6 +150,39 @@ static bool swap_shift(uint8_t plain, uint16_t shifted, keyrecord_t *record) {
         }
     }
     return false;   // 既定の処理はさせない
+}
+
+// Shift を押してから TAPPING_TERM 以内に同じ Shift をもう一度押すと、Caps Lock を切り替える
+// cline46 の lshift_caps / rshift_caps と同じ動きにしている
+static uint16_t shift_first_keycode    = KC_NO;
+static uint16_t shift_first_press_time = 0;
+// 1回目の Shift を、ほかのキーを押さずに離したか
+static bool     shift_tapped           = false;
+// Shift を押してから、ほかのキーを押していないか
+static bool     shift_alone            = false;
+
+static void caps_lock_on_double_shift(uint16_t keycode, keyrecord_t *record) {
+    if (keycode != KC_LSFT && keycode != KC_RSFT) {
+        if (record->event.pressed) {
+            shift_tapped = false;
+            shift_alone  = false;
+        }
+        return;
+    }
+    if (!record->event.pressed) {
+        shift_tapped = shift_alone;
+        shift_alone  = false;
+        return;
+    }
+    if (shift_tapped && keycode == shift_first_keycode && timer_elapsed(shift_first_press_time) < TAPPING_TERM) {
+        // tap_code() は KC_CAPS を TAP_HOLD_CAPS_DELAY（80ms）押してから離す。Mac は短すぎると反応しないため
+        tap_code(KC_CAPS);
+        shift_tapped = false;
+        return;
+    }
+    shift_first_keycode    = keycode;
+    shift_first_press_time = timer_read();
+    shift_alone            = true;
 }
 
 // スクロールキーの状態
@@ -221,7 +261,7 @@ bool is_mouse_record_user(uint16_t keycode, keyrecord_t *record) {
 static int8_t aml_held_keys = 0;
 
 // 押している間はオートマウスレイヤーを抜けさせないキーか
-// KC_BTN1 でのドラッグ、SCRL_MO やスクロールキーでのスクロール
+// KC_BTN1 でのドラッグ、スクロールキーでのスクロール
 static bool is_aml_held_key(uint16_t keycode, keyrecord_t *record) {
     return is_mouse_record_kb(keycode, record) || IS_MOUSEKEY(keycode);
 }
@@ -244,8 +284,9 @@ static void aml_exit_on_other_key(uint16_t keycode, keyrecord_t *record) {
     if (IS_QK_TOGGLE_LAYER(keycode) && QK_TOGGLE_LAYER_GET_LAYER(keycode) == AUTO_MOUSE_DEFAULT_LAYER) {
         return;
     }
-    // コピーやペーストのように、マウスレイヤーに割り当てたキーでは抜けない
-    // 同時押しで出したキーにはキーの位置がないので、この判定はしない
+    // マウスレイヤーに割り当てたキーでは抜けない
+    // 同時押しで出したキーにはキーの位置がないので、この判定はしない。
+    // そのため、同時押しの Cmd+W や Cmd+T を押すとマウスレイヤーから抜ける
     if (IS_KEYEVENT(record->event) && layer_switch_get_layer(record->event.key) == AUTO_MOUSE_DEFAULT_LAYER) {
         return;
     }
@@ -258,6 +299,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
     aml_exit_on_other_key(keycode, record);
 #endif
+    caps_lock_on_double_shift(keycode, record);
     switch (keycode) {
         case KC_SCLN:                                  // 単押し ':' / Shift ';'
             return swap_shift(KC_SCLN, KC_COLN, record);
