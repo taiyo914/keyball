@@ -42,14 +42,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______        , _______    , _______    , MO(4)         , LALT_T(KC_LNG2)   , LT(1,KC_SPC)    , KC_LGUI       , KC_RGUI         , LT(2,KC_LNG1) , XXXXXXX       , XXXXXXX    , XXXXXXX , KC_VOLD , KC_VOLU
   ),
   // 数字と移動
-  //   右手: 数字（テンキーと同じ並び）
+  //   右手: 数字（テンキーと同じ並び）と + -
   //   左手: 矢印
   //   Q: カーソルの左の1単語を削除（Option+Backspace）  T: カーソルの右の1単語を削除（Option+Delete）
   //   右下の2キー: 画面の明るさ
   [1] = LAYOUT_universal(
     _______        , _______    , _______    , _______       , _______           , _______         ,                                   _______       , _______       , _______    , _______ , _______ , _______ ,
-    _______        , A(KC_BSPC) , A(KC_LEFT) , KC_UP         , A(KC_RGHT)        , A(KC_DEL)       ,                                   _______       , KC_7          , KC_8       , KC_9    , _______ , _______ ,
-    _______        , G(KC_LEFT) , KC_LEFT    , KC_DOWN       , KC_RGHT           , G(KC_RGHT)      ,                                   _______       , KC_4          , KC_5       , KC_6    , _______ , _______ ,
+    _______        , A(KC_BSPC) , A(KC_LEFT) , KC_UP         , A(KC_RGHT)        , A(KC_DEL)       ,                                   _______       , KC_7          , KC_8       , KC_9    , KC_PLUS , _______ ,
+    _______        , G(KC_LEFT) , KC_LEFT    , KC_DOWN       , KC_RGHT           , G(KC_RGHT)      ,                                   _______       , KC_4          , KC_5       , KC_6    , KC_MINS , _______ ,
     _______        , _______    , _______    , _______       , _______           , _______         , _______       , _______         , KC_0          , KC_1          , KC_2       , KC_3    , _______ , _______ ,
     _______        , _______    , _______    , _______       , _______           , _______         , _______       , _______         , _______       , XXXXXXX       , XXXXXXX    , XXXXXXX , KC_BRID , KC_BRIU
   ),
@@ -58,12 +58,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //   Q ' quote         W " w-quote    E = equal      R ^ raised to the power of   T ~ tilde
   //   A @ at            S * star       D $ dollar     G ` grave
   //   X ! eXclamation   C : colon      V | vertical   B \ backslash
-  //   H # hash          N & 'n (and)   L + large      P % percent
+  //   H # hash          N & 'n (and)   M % mod        P + plus
   [2] = LAYOUT_universal(
     _______        , _______    , _______    , _______       , _______           , _______         ,                                   _______       , _______       , _______    , _______ , _______ , _______ ,
-    _______        , KC_QUOT    , KC_DQUO    , KC_EQL        , KC_CIRC           , KC_TILD         ,                                   _______       , KC_LPRN       , KC_RPRN    , _______ , KC_PERC , _______ ,
-    _______        , KC_AT      , KC_ASTR    , KC_DLR        , _______           , KC_GRV          ,                                   KC_HASH       , KC_LBRC       , KC_RBRC    , KC_PLUS , _______ , _______ ,
-    _______        , _______    , KC_EXLM    , KC_SCLN       , KC_PIPE           , KC_BSLS         , _______       , _______         , KC_AMPR       , _______       , _______    , _______ , _______ , _______ ,
+    _______        , KC_QUOT    , KC_DQUO    , KC_EQL        , KC_CIRC           , KC_TILD         ,                                   _______       , KC_LPRN       , KC_RPRN    , _______ , KC_PLUS , _______ ,
+    _______        , KC_AT      , KC_ASTR    , KC_DLR        , _______           , KC_GRV          ,                                   KC_HASH       , KC_LBRC       , KC_RBRC    , _______ , _______ , _______ ,
+    _______        , _______    , KC_EXLM    , KC_SCLN       , KC_PIPE           , KC_BSLS         , _______       , _______         , KC_AMPR       , KC_PERC       , _______    , _______ , _______ , _______ ,
     _______        , _______    , _______    , _______       , _______           , _______         , _______       , _______         , _______       , XXXXXXX       , XXXXXXX    , XXXXXXX , _______ , _______
   ),
   // マウス（オートマウスレイヤー）
